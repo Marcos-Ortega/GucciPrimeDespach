@@ -19,4 +19,4 @@
 ## Contribuyentes de esta gran aplicacion
 
 
-![Contribuyentes](https://contrib.rocks/image?repo=LuuAlveal/No_Hackeamos_Ni_La_Puerta)
+![Contribuyentes](https://contrib.rocks/image?repo=Marcos-Ortega/GucciPrimeDespach)
