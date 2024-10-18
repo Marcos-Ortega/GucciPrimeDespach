@@ -123,7 +123,7 @@ export default function Listausers() {
                                 >
                                     <ListItem.Chevron />
                                     <ListItem.Content>
-                                        <ListItem.Title>{user.nombre} {user.apellido} - Año {user.year}</ListItem.Title>
+                                        <ListItem.Title>{user.nombre} {user.apellido} - {user.provincia}</ListItem.Title>
                                         <ListItem.Subtitle>{user.dni}</ListItem.Subtitle>
                                     </ListItem.Content>
                                     <TouchableOpacity
