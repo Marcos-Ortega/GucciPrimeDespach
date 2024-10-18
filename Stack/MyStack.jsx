@@ -8,7 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
 import Home from '../screens/Home';
-
+import Admin from '../admin-screen/Admin';
+import ListaUsuarios from '../admin-screen/ListaUsuarios';
+import ModificarUser from '../admin-screen/ModificarUser';
 const Stack = createStackNavigator();
 const auth = getAuth(appFirebase);
 
@@ -75,15 +77,48 @@ export default function MyStack() {
             return (
               <TouchableOpacity
                 onPress={CerrarSesion}
-                style={{ backgroundColor: 'transparent', marginLeft:10 }}
+                style={{ backgroundColor: 'transparent', marginLeft: 10 }}
               >
-                <Text style={{ color: 'white', fontSize:15 }}>Salir</Text>
+                <Text style={{ color: 'white', fontSize: 15 }}>Salir</Text>
               </TouchableOpacity>
             );
           }
         }}
       />
-
+      <Stack.Screen
+        name="Admin"
+        component={Admin}
+        options={{
+          headerTitle: () => <Logo />,
+          title: 'Gucci Prime Despach - Admin',
+          headerLeft: () => {
+            return (
+              <TouchableOpacity
+                onPress={CerrarSesion}
+                style={{ backgroundColor: 'transparent', marginLeft: 10 }}
+              >
+                <Text style={{ color: 'white', fontSize: 15 }}>Salir</Text>
+              </TouchableOpacity>
+            );
+          }
+        }}
+      />
+      <Stack.Screen
+        name="ListaUsuarios"
+        component={ListaUsuarios}
+        options={{
+          headerTitle: () => <Logo />,
+          title: 'Gucci Prime Despach - Admin',
+        }}
+      />
+      <Stack.Screen
+        name="ModificarUser"
+        component={ModificarUser}
+        options={{
+          headerTitle: () => <Logo />,
+          title: 'Gucci Prime Despach - Admin',
+        }}
+      />
     </Stack.Navigator>
   );
 }

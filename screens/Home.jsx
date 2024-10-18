@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Text, View, ImageBackground, StyleSheet, Picker, Button, TouchableOpacity } from "react-native";
-
-
+import { Text, View, ImageBackground, StyleSheet, Picker, Button, TouchableOpacity, TextInput, Alert } from "react-native";
+import Swal from "sweetalert2";
 export default function Home() {
     const [ubicacion, setUbicacion] = useState("Seleccione");
     const [destino, setDestino] = useState("Seleccione");
@@ -14,9 +13,41 @@ export default function Home() {
         "Tierra del Fuego", "Tucumán"
     ];
 
+    const [state, setState] = useState({
+        longitud: "",
+        peso: ""
+    });
+
+    const handleDimen = (name, value) => {
+        setState({ ...state, [name]: value });
+    };
+
     const calcularEnvio = () => {
-        // Lógica para calcular el envío
-        console.log(`Ubicación: ${ubicacion}, Destino: ${destino}`);
+        const { longitud, peso } = state;
+        const pesoNum = parseFloat(peso);
+        const longitudNum = parseFloat(longitud);
+
+        // Verificar que los valores son numéricos
+        if (isNaN(pesoNum) || isNaN(longitudNum)) {
+            Alert.alert("Error", "Por favor, ingrese valores válidos para peso y longitud.");
+            return;
+        }
+
+        // Lógica de cálculo
+        let precio;
+        if (pesoNum < 10 && longitudNum > 0) {
+            precio = 10000;
+        } else if (pesoNum > 10 && longitudNum < 10){
+            precio = 20000;
+        } else if (pesoNum > 10 && longitudNum > 20){
+            precio = 30000;
+        }
+        Swal.fire({
+            title: `El precio del envío es: $${precio}`,
+            icon: 'success',
+            backdrop: false, 
+            allowOutsideClick: false 
+        })
     };
 
     return (
@@ -25,12 +56,11 @@ export default function Home() {
             resizeMode={'cover'}
             style={styles.backgroundImage}
         >
-
             <View style={styles.menu}>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.menuItem}>Envios</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.buttonSuc}>
                     <Text style={styles.menuItem}>Sucursales</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
@@ -51,7 +81,25 @@ export default function Home() {
                         <Picker.Item key={index} label={provincia} value={provincia} />
                     ))}
                 </Picker>
-                <View style={{ marginTop: 25}}>
+                <Text style={{ fontSize: 17 }}>Longitud</Text>
+                <View style={styles.cajaIng}>
+                    <TextInput
+                        placeholder='Longitud'
+                        style={{ paddingHorizontal: 15, outline: 0 }}
+                        keyboardType="numeric"
+                        onChangeText={(value) => handleDimen('longitud', value)}
+                    />
+                </View>
+                <Text style={{ fontSize: 17 }}>Peso</Text>
+                <View style={styles.cajaIng}>
+                    <TextInput
+                        placeholder='Peso'
+                        style={{ paddingHorizontal: 15, outline: 0 }}
+                        keyboardType="numeric"
+                        onChangeText={(value) => handleDimen('peso', value)}
+                    />
+                </View>
+                <View style={{ marginTop: 25 }}>
                     <Button title="Calcular Envio" onPress={calcularEnvio} />
                 </View>
             </View>
@@ -70,19 +118,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         fontFamily: 'sans-serif'
     },
-    logo: {
-        width: 100,
-        height: 100,
-        marginBottom: 8,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: 'white'
-    },
     menu: {
         flex: 1,
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-around',
         flexDirection: 'row',
         alignItems: 'flex-start',
         width: '100%',
@@ -92,7 +130,7 @@ const styles = StyleSheet.create({
     },
     menuItem: {
         fontSize: 16,
-        color: 'white',
+        color: 'black',
         textAlign: 'center'
     },
     formContainer: {
@@ -103,8 +141,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 16,
         width: 'auto',
-        height: '19em',
-        boxShadow: '10px 10px 5px rgba(0, 0, 0, 0.5)', 
+        height: 'auto',
+        marginTop: '7em'
     },
     formTitle: {
         fontSize: 25,
@@ -124,9 +162,24 @@ const styles = StyleSheet.create({
     },
     button: {
         padding: 20,
-        backgroundColor: '#d17e0c',
+        backgroundColor: '#a4cdd1',
         borderRadius: 25,
         paddingHorizontal: 15,
         flexShrink: 1,
+    },
+    buttonSuc: {
+        padding: 20,
+        backgroundColor: '#a4cdd1',
+        borderRadius: 25,
+        paddingHorizontal: 15,
+        flexShrink: 1,
+        left: 50,
+    },
+    cajaIng: {
+        paddingVertical: 10,
+        backgroundColor: 'white',
+        borderRadius: 30,
+        marginBottom: 10,
+        marginTop: 2
     }
 });
